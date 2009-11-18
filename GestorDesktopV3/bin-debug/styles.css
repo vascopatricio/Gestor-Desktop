@@ -1,0 +1,19 @@
+/* CSS file */
+
+Panel
+{
+	roundedBottomCorners: true;
+	borderThicknessLeft: 0;
+	borderThicknessRight: 0;
+	borderThicknessTop: 0;
+	controlBarStyleName: panelControlBar;
+	headerHeight: 0;
+	statusStyleName: panelStatus;
+	backgroundSize: "100%";
+}
+.panelControlBar
+{
+}
+.panelStatus
+{
+}
