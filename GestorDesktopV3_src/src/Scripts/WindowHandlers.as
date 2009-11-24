@@ -1,6 +1,7 @@
 // ActionScript file		
 import Classes.ActionItem;
 
+import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 
 private function searchOnChanged() : void
@@ -14,6 +15,12 @@ private function menuHandler(event : MenuEvent) : void {
 	
 	if(event.item.@label == "File_exit")
 		close();
+}
+
+private function checkIfEnterAndLogin(event: KeyboardEvent) : void
+{
+	if(event.charCode == 13)
+		login();	
 }
 
 private function createEditWindow(event: MouseEvent) : void

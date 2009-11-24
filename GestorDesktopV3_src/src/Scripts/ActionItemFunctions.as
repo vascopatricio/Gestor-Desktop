@@ -49,12 +49,17 @@ private function makeListFromItems() : void
 		//Filtrar item se houver search e nao fizer parte do search
 		item = actionItemsArray[i];
 		if(searchTextField.text.length > 0)
-			if(item.getTitle().indexOf(searchTextField.text) < 0)
+			if((item.getTitle().toUpperCase()).indexOf(searchTextField.text.toUpperCase()) < 0)
 				continue;
 		
 		//Criar label do item	
 		text = new Label();
-		dateStringTemp = parseString(item.getDues());	
+		
+		if(isLate(item.getDues()))
+			dateStringTemp = "Late";
+		else
+			dateStringTemp = "To do"
+		
 		if(dateStringTemp == "To do")
 			text.setStyle("color",0xF5B800);
 		else if(dateStringTemp == "Late")
@@ -69,7 +74,7 @@ private function makeListFromItems() : void
 			"Project: "+item.getProjectName()+"\n"+
 			"Team: \n";
 		text.addEventListener(MouseEvent.CLICK, createEditWindow);
-		text.toolTip += item.getTargets();
+		text.toolTip += item.makeTargetsText();
 		
 		//Adiciona label ao painel
 		actionItemsPanel.addChild(text);
@@ -95,7 +100,10 @@ private function makeListFromItems() : void
 			continue;
 		
 		text = new Label();
-		dateStringTemp = parseString(item.getDues());
+		if(isLate(item.getDues()))
+			dateStringTemp = "Late";
+		else
+			dateStringTemp = "To do";
 		
 		text.setStyle("color",0x009900);
 		text.text = item.getTitle();
@@ -107,7 +115,7 @@ private function makeListFromItems() : void
 			"Project: "+item.getProjectName()+"\n"+
 			"Team: \n";
 			
-		text.toolTip += item.getTargets();
+		text.toolTip += item.makeTargetsText();
 		
 		actionItemsPanel.addChild(text);
 		labelsArray.push(text);
@@ -122,14 +130,6 @@ private function makeListFromItems() : void
 		
 		currentIndex++;
 	}
-}
-
-private function resetActionItemsList() : void
-{
-	actionItemsArray = new Array();
-	
-	checksArray = new Array();
-	labelsArray = new Array();
 }
 
 private function addActionItemToArray(item : ActionItem) : void
@@ -148,7 +148,7 @@ private function countLateActionItems() : int
 	
 	for each(var item:ActionItem in actionItemsArray)
 	{
-		if(parseString(item.getDues()) == "Late")
+		if(isLate(item.getDues()) == true)
 			ct++;
 	}	
 	
@@ -161,33 +161,40 @@ private function countTodoActionItems() : int
 	
 	for each(var item:ActionItem in actionItemsArray)
 	{
-		if(parseString(item.getDues()) == "To do")
+		if(isLate(item.getDues()) == false)
 			ct++;
 	}	
 	
 	return ct;
 }
 
-private function parseString(date:String) : String
+private function isLate(date : String) : Boolean
 {
-	//Lembrar que retorna meses 0-11 e dias 0-30
 	var currentDate:Date = new Date();
 	
 	//AAAA-MM-DD
 	var ret:String = "";
 	var splitStrings:Array = date.split("-");
 	
+	//Se ano maior, nao ta late, se ano ja passou, ta late
 	if(currentDate.fullYear > parseInt(splitStrings[0]))
-		return ("Late");
+		return true;
 	if(currentDate.fullYear < parseInt(splitStrings[0]))
-		return ("To do");
+		return false;
+	
+	//Se ano igual
 	if(currentDate.month > parseInt(splitStrings[1])-1)
-		return ("Late");
+		return true;
 	if(currentDate.month < parseInt(splitStrings[1])-1)
-		return ("To do");
+		return false;
+	
+	//Se mes igual
 	if(currentDate.day > parseInt(splitStrings[2])-1)
-		return ("Late");
-	else return ("To do");		
+		return true;
+	else return false;		
+
+	//Se acabar neste ano, neste mes e neste dia
+	return true;	
 }
 
 private function markAsDone(event : Event) : void
@@ -201,8 +208,8 @@ private function markAsDone(event : Event) : void
 			labelsArray[i].setStyle("color",0x009900);
 			sendMarkAsDoneHTTPRequest(actionItemsArray[i]);
 			
-			//Mudar corrente para array de feitos
-			//E fazer shift left ao array de por fazer
+			//Mudar actionItem feito para array de actionItems feitos
+			//E fazer shift left ao array de actionItems por fazer
 			doneActionItemsArray.push(actionItemsArray[i]);
 			
 			var j:int;
@@ -211,8 +218,9 @@ private function markAsDone(event : Event) : void
 				actionItemsArray[i] = actionItemsArray[i+1];								
 			}
 			actionItemsArray[actionItemsArray.length-1] = null;
-							
-		}		
+			
+			return;				
+		}
 	}			
 }
 

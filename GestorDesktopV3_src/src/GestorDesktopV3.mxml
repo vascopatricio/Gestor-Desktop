@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="startup()" height="425" width="564" cornerRadius="20">
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="startup()" height="425" width="290" cornerRadius="20">
+	<mx:Script source="Scripts//Add_EditWindowFunctions.as"/>
 	<mx:Script source="Scripts//WindowFunctions.as"/>
 	<mx:Script source="Scripts//WindowHandlers.as"/>
 	<mx:Script source="Scripts//ActionItemFunctions.as"/>
@@ -41,7 +42,7 @@
 	<mx:ArrayCollection id="actionItemsProvider" />
 	<mx:TextInput x="137" y="14" id="searchTextField" change="searchOnChanged()" width="124"/>
 	<mx:Text x="17" y="16" text="Search ActionItems:&#xa;" id="searchLabel"/>
-	<mx:Button x="21.5" y="355" label="Refresh" id="refreshBut" click="refreshActionItems()"/>
+	<mx:Button x="21.5" y="355" label="Refresh" id="refreshBut" click="refreshAll()"/>
 	<mx:Text x="100.5" y="357" text="Last refresh: " width="170" id="refreshLabel"/>
 	<mx:Button x="21.5" y="204" id="loginBut" label="Login" width="67" click="login()"/>
 	<mx:Label x="21.5" y="154" text="Username:" id="userLabel"/>
@@ -53,6 +54,5 @@
 	<mx:Button x="145.5" y="383" label="Logout" width="120" id="logoutButton" click="logout()"/>
 	<mx:Panel x="7" y="42" width="264" height="305" layout="absolute" title="ActionItems" id="actionItemsPanel" cornerRadius="7" >
 	</mx:Panel>
-	<mx:TextArea x="293" y="15" width="242" height="390" id="debug"/>
 	
 </mx:WindowedApplication>

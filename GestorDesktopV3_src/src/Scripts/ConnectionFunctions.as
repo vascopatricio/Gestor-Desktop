@@ -7,6 +7,31 @@ import mx.rpc.events.ResultEvent;
 import mx.rpc.http.HTTPService;
 import mx.utils.Base64Encoder;
 
+private function refreshAll() : void
+{
+	refreshProjects();
+	refreshActionItems();
+}
+
+private function refreshProjects() : void
+{
+	//Cria request
+	var service:HTTPService = new HTTPService();
+	service.url = "http://jeknowledge.pt/gestor/api/projects";
+	service.method = "GET";
+	service.addEventListener(ResultEvent.RESULT, projectSuccessHandler);
+	service.addEventListener(FaultEvent.FAULT, projectFailHandler);
+	service.resultFormat = "xml";
+	
+	//Encode, basic auth
+	var encoder : Base64Encoder = new mx.utils.Base64Encoder();
+	encoder.encode(currentUser+":"+currentPass);
+	service.headers["Authorization"] = "Basic " + encoder.toString();
+	
+	//Send
+	service.send();
+}
+
 private function refreshActionItems() : void
 {
 	//Cria request
@@ -56,5 +81,5 @@ private function sendMarkAsDoneHTTPRequest(item : ActionItem) : void
 	
 	//Send
 	service.send(params);
-	debug.text = service.url;
+	//debug.text = service.url;
 }

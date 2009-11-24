@@ -3,10 +3,10 @@ import flash.display.Loader;
 import flash.events.Event;
 import flash.net.URLRequest;
 
-private static var blueFlag:String = "C:\\Users\\VascoPatricio\\Desktop\\jeKnowledge\\Icones Gestor\\famfamfam_silk_icons_v013\\icons\\flag_blue.png"
-private static var greenFlag:String = "C:\\Users\\VascoPatricio\\Desktop\\jeKnowledge\\Icones Gestor\\famfamfam_silk_icons_v013\\icons\\flag_green.png"
-private static var redFlag:String = "C:\\Users\\VascoPatricio\\Desktop\\jeKnowledge\\Icones Gestor\\famfamfam_silk_icons_v013\\icons\\flag_red.png"
-private static var yellowFlag:String = "C:\\Users\\VascoPatricio\\Desktop\\jeKnowledge\\Icones Gestor\\famfamfam_silk_icons_v013\\icons\\flag_yellow.png"
+private static var blueFlag:String = "http://jeknowledge.pt/media/icons/cog_delete.png"
+private static var greenFlag:String = "http://jeknowledge.pt/media/icons/flag_green.png"
+private static var redFlag:String = "http://jeknowledge.pt/media/icons/flag_red.png"
+private static var yellowFlag:String = "http://jeknowledge.pt/media/icons/flag_yellow.png"
 
 private function startupTrayIcon() : void
 {

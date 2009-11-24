@@ -7,8 +7,9 @@ package Classes
 		
 		private var project_id:int;
 		private var project_name:String;
-		private var targets_user:String;
-		private var targetsArray:Array = new Array();
+		
+		private var targetsFullNameArray:Array = new Array();
+		private var targetsIDArray:Array = new Array();
 		
 		private var description:String;
 		private var due_date:String;
@@ -22,7 +23,7 @@ package Classes
 		
 		private var isCurrent:Boolean = false;
 		
-		public function ActionItem(inTitle:String, inActionID:String, inProjectID:int, inProjectName:String, inDues:String, inPriority:int, inDescription:String, inTargets_user:String, inAuthor_user_login:String, inAuthor_user_id:int, inAuthor_user_name:String)
+		public function ActionItem(inTitle:String, inActionID:String, inProjectID:int, inProjectName:String, inDues:String, inPriority:int, inDescription:String, inAuthor_user_login:String, inAuthor_user_id:int, inAuthor_user_name:String)
 		{
 			title = inTitle;
 			actionItemID = inActionID;
@@ -32,7 +33,6 @@ package Classes
 			due_date = inDues;
 			priority = inPriority;
 			description = inDescription;
-			targets_user = inTargets_user;
 			
 			author_user_login = inAuthor_user_login;
 			author_user_id = inAuthor_user_id;
@@ -42,10 +42,6 @@ package Classes
 		public function setXML(arg:String) : void
 		{
 			this.xmlForm = arg;
-		}
-		public function getTargetsArray() : Array
-		{
-			return targetsArray;
 		}
 		
 		public function getTitle() : String
@@ -88,6 +84,17 @@ package Classes
 		{
 			return xmlForm;
 		}
+		
+		public function getTargetsFullNameArray() : Array
+		{
+			return targetsFullNameArray;
+		}
+		
+		public function getTargetsIDArray() : Array
+		{
+			return targetsIDArray;
+		}
+		
 		public function getCurrent() : Boolean
 		{
 			return isCurrent;
@@ -96,13 +103,19 @@ package Classes
 		{
 			isCurrent = value;
 		}
-		public function getTargets() : String
+		public function makeTargetsText() : String
 		{
-			return targets_user;
-		}
-		public function addTargetsEntry(entry:String) : void
-		{
-			targets_user += "\t"+entry+"\n";
+			var str:String = "";
+			
+			var i:int;
+			for(i=0; i<targetsFullNameArray.length; i++)
+			{
+				str += "\t"+targetsFullNameArray[i];
+				if(i != targetsFullNameArray.length -1)
+					str += "\n";
+			}
+			
+			return str;			
 		}
 	}
 }

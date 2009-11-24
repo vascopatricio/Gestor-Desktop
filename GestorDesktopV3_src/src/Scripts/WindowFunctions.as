@@ -1,6 +1,7 @@
 // ActionScript file
 import Classes.ActionItem;
 
+import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 
 import mx.utils.Base64Encoder;
@@ -22,6 +23,12 @@ private function login() : void
 		loginResult.text = "Invalid username/password";
 		return;
 	}
+	
+	if(!testLogin(userTextField.text, passTextField.text))
+	{
+		loginResult.text = "Login try failed!";
+		return;
+	}
 		
 	currentUser = userTextField.text;
 	currentPass = passTextField.text;
@@ -30,11 +37,21 @@ private function login() : void
 	showMainMode();				
 }
 
+private function testLogin(user:String, pass:String) : Boolean
+{
+	if(user == "fake")
+		return false;
+	return true;
+}
+
 private function logout() : void
 {
 	currentUser = null;
 	currentPass = null;
 	isLoggedIn = false;
+	
+	if(addActionItemWindow != null)
+		addActionItemWindow = null;
 	
 	showLoginMode();
 }
@@ -48,6 +65,8 @@ private function showLoginMode() : void
 	actionItemsPanel.visible = false;
 	addButton.visible = false;
 	logoutButton.visible = false;
+	
+	passTextField.addEventListener(KeyboardEvent.KEY_DOWN, checkIfEnterAndLogin);
 		
 	userLabel.visible = true;
 	userTextField.visible = true;
@@ -74,7 +93,7 @@ private function showMainMode() : void
 	loginBut.visible = false;
 	loginResult.visible = false;
 	
-	refreshActionItems();
+	refreshAll();
 }
 
 private function createActionItemWindow() : void
@@ -84,6 +103,8 @@ private function createActionItemWindow() : void
 	
 	addActionItemWindow.cancelButton.addEventListener(MouseEvent.CLICK, closeAddActionItemWindow);	
 	addActionItemWindow.projectComboBox.dataProvider = availableProjectsNames;
+	makeTargetList(addActionItemWindow.projectComboBox.selectedLabel);
+	addActionItemWindow.targetList.allowMultipleSelection = true;
 	
 	var priorities:Array = new Array();
 	priorities.push("High");
@@ -110,11 +131,19 @@ private function showEditActionItemWindow(actionItem: ActionItem) : void
 	addActionItemWindow.dueDateTextInput.text = actionItem.getDues();
 	
 	var i:int;
-	var targetsArray:Array = actionItem.getTargetsArray();
-	
-	for(i=0; i<targetsArray.length; i++)
-		addActionItemWindow.targetsTextInput.text += targetsArray[i]+",";	
+	makeTargetList(actionItem.getProjectName());
 }
+
+private function getProjectList() : Array
+{
+	var toret:Array = new Array();
+	toret.push("JK-SI-GestorDesktop");
+	toret.push("JK-SI-ProjectoTeste1");
+	toret.push("JK-SI-ProjectoTeste2");
+	
+	return toret;	
+}
+
 
 private function showAddActionItemWindow() : void
 {
@@ -139,12 +168,13 @@ private function editActionItemFromWindow(event: MouseEvent) : void
 	var params:Object = {};
 	params.title = addActionItemWindow.titleTextInput.text;
 	params.project_id = availableProjectsIDs[addActionItemWindow.projectComboBox.selectedIndex];
-	params.targets = addActionItemWindow.targetsTextInput.text;
+	
+	params.targets = makeTargetsString();
+	Alert.show(makeTargetsString(),"");
 	params.description = addActionItemWindow.descriptionTextArea.text;
 	params.priority = addActionItemWindow.priorityComboBox.selectedIndex + 1;
 	if(addActionItemWindow.dueDateTextInput.text.length != 0)
 		params.due_date = addActionItemWindow.dueDateTextInput.text;
-	params.targets = addActionItemWindow.targetsTextInput;
 	
 	//Encode, basic auth
 	var encoder : Base64Encoder = new Base64Encoder();
@@ -158,8 +188,6 @@ private function editActionItemFromWindow(event: MouseEvent) : void
 
 private function addActionItemFromWindow(event : MouseEvent) : void
 {
-	Alert.show("Entrado na funcao","");
-	
 	//Cria request
 	var service:HTTPService = new HTTPService();
 	service.url = "http://jeknowledge.pt/gestor/api/action_items";
@@ -171,7 +199,7 @@ private function addActionItemFromWindow(event : MouseEvent) : void
 	var params:Object = {};
 	params.title = addActionItemWindow.titleTextInput.text;
 	params.project_id = availableProjectsIDs[addActionItemWindow.projectComboBox.selectedIndex];
-	params.targets = addActionItemWindow.targetsTextInput.text;
+	params.targets = makeTargetsString();
 	params.description = addActionItemWindow.descriptionTextArea.text;
 	params.priority = addActionItemWindow.priorityComboBox.selectedIndex + 1;
 	if(addActionItemWindow.dueDateTextInput.text.length != 0)
