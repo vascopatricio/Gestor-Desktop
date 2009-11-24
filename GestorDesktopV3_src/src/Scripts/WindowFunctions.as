@@ -96,62 +96,6 @@ private function showMainMode() : void
 	refreshAll();
 }
 
-private function createActionItemWindow() : void
-{
-	addActionItemWindow = new AddNewActionItemWindow();
-	addActionItemWindow.open();
-	
-	addActionItemWindow.cancelButton.addEventListener(MouseEvent.CLICK, closeAddActionItemWindow);	
-	addActionItemWindow.projectComboBox.dataProvider = availableProjectsNames;
-	makeTargetList(addActionItemWindow.projectComboBox.selectedLabel);
-	addActionItemWindow.targetList.allowMultipleSelection = true;
-	
-	var priorities:Array = new Array();
-	priorities.push("High");
-	priorities.push("Medium");
-	priorities.push("Low");
-	addActionItemWindow.priorityComboBox.dataProvider = priorities;
-	addActionItemWindow.priorityComboBox.selectedIndex = 1;
-}
-
-private function showEditActionItemWindow(actionItem: ActionItem) : void
-{
-	createActionItemWindow();
-	addActionItemWindow.addButton.addEventListener(MouseEvent.CLICK, editActionItemFromWindow);
-	addActionItemWindow.titleTextInput.text = actionItem.getTitle();
-	addActionItemWindow.descriptionTextArea.text = actionItem.getDescription();
-	addActionItemWindow.projectComboBox.selectedIndex = setComboBoxIndexByName(actionItem.getProjectName());
-
-	if(addActionItemWindow.projectComboBox.selectedIndex == -1)
-		return;
-		
-	//API - 1 High, 2 Medium, 3 Low	
-	addActionItemWindow.priorityComboBox.selectedIndex = actionItem.getPriority();
-	
-	addActionItemWindow.dueDateTextInput.text = actionItem.getDues();
-	
-	var i:int;
-	makeTargetList(actionItem.getProjectName());
-}
-
-private function getProjectList() : Array
-{
-	var toret:Array = new Array();
-	toret.push("JK-SI-GestorDesktop");
-	toret.push("JK-SI-ProjectoTeste1");
-	toret.push("JK-SI-ProjectoTeste2");
-	
-	return toret;	
-}
-
-
-private function showAddActionItemWindow() : void
-{
-	createActionItemWindow();
-	addActionItemWindow.addButton.addEventListener(MouseEvent.CLICK, addActionItemFromWindow);
-		
-}
-
 private function editActionItemFromWindow(event: MouseEvent) : void
 {
 	if(addActionItemWindow.hasBeenChanged == false)
