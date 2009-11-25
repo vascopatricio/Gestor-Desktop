@@ -80,17 +80,17 @@ private function refreshItemsSuccess(event : ResultEvent) : void
 		}*/
 			
 		var j:int;
-		for(j=0; j<xml.descendants("targets")[i].length(); j++)
+		for(j=0; j<xml.descendants("targets")[i].child("user").child("name").length(); j++)
 		{	
-			actionItem.getTargetsFullNameArray().push(xml.descendants("targets")[i].child("user").child("name").toString());
-			actionItem.getTargetsIDArray().push(xml.descendants("targets")[i].child("user").child("id").toString());
+			var userName:String = xml.descendants("targets")[i].child("user").child("name")[j].toString();
+			var userID:String = xml.descendants("targets")[i].child("user").child("id")[j].toString();
+			
+			actionItem.getTargetsFullNameArray().push(userName);
+			actionItem.getTargetsIDArray().push(userID);			
 		}
 		
 		actionItem.setXML("<action_item>\n<done>0</done>\n</action_item>");
 		actionItemsArray.push(actionItem);
-		
-		//Obter XML do item em concreto
-		//debug.text += "\n" + actionItem.getProjectLink() + "\n";	
 	}
 	
 	makeListFromItems();

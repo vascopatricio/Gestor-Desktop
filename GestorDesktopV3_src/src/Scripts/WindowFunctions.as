@@ -61,7 +61,6 @@ private function showLoginMode() : void
 	searchLabel.visible = false;
 	searchTextField.visible = false;
 	refreshBut.visible = false;
-	refreshLabel.visible = false;
 	actionItemsPanel.visible = false;
 	addButton.visible = false;
 	logoutButton.visible = false;
@@ -81,7 +80,6 @@ private function showMainMode() : void
 	searchLabel.visible = true;
 	searchTextField.visible = true;
 	refreshBut.visible = true;
-	refreshLabel.visible = true;
 	actionItemsPanel.visible = true;
 	addButton.visible = true;
 	logoutButton.visible = true;

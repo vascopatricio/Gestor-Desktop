@@ -42,8 +42,7 @@
 	<mx:ArrayCollection id="actionItemsProvider" />
 	<mx:TextInput x="137" y="14" id="searchTextField" change="searchOnChanged()" width="124"/>
 	<mx:Text x="17" y="16" text="Search ActionItems:&#xa;" id="searchLabel"/>
-	<mx:Button x="21.5" y="355" label="Refresh" id="refreshBut" click="refreshAll()"/>
-	<mx:Text x="100.5" y="357" text="Last refresh: " width="170" id="refreshLabel"/>
+	<mx:Button x="21.5" y="355" label="Refresh" id="refreshBut" click="refreshAll()" width="62" height="14" fontSize="7"/>
 	<mx:Button x="21.5" y="204" id="loginBut" label="Login" width="67" click="login()"/>
 	<mx:Label x="21.5" y="154" text="Username:" id="userLabel"/>
 	<mx:Label x="22.5" y="178" text="Password:" id="passLabel"/>

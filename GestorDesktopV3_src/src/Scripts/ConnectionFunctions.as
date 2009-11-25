@@ -11,6 +11,9 @@ private function refreshAll() : void
 {
 	refreshProjects();
 	refreshActionItems();
+	
+	var currentDate:Date = new Date();
+	refreshBut.toolTip = "Último refresh: "+currentDate.toLocaleTimeString();
 }
 
 private function refreshProjects() : void
