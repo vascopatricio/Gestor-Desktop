@@ -104,7 +104,6 @@ private function createActionItemWindow() : void
 	priorities.push("Medium");
 	priorities.push("Low");
 	addActionItemWindow.priorityComboBox.dataProvider = priorities;
-	addActionItemWindow.priorityComboBox.selectedIndex = 1;
 	
 	addActionItemWindow.duesDateField.formatString = "YYYY-MM-DD";
 	
@@ -124,7 +123,9 @@ private function showEditActionItemWindow(actionItem: ActionItem) : void
 		return;
 		
 	//API - 1 High, 2 Medium, 3 Low	
-	addActionItemWindow.priorityComboBox.selectedIndex = actionItem.getPriority();
+	//Na combobox: 0-High, 1-Medium, 2-Low
+	if(actionItem.getPriority() > 0)
+		addActionItemWindow.priorityComboBox.selectedIndex = actionItem.getPriority()-1;
 	
 	addActionItemWindow.duesDateField.text = actionItem.getDues();
 	makeTargetListManually();
@@ -159,6 +160,10 @@ private function showAddActionItemWindow() : void
 	editWindowActionItem = null;
 	
 	createActionItemWindow();
+	
 	addActionItemWindow.addButton.addEventListener(MouseEvent.CLICK, addActionItemFromWindow);
+	//Colocar prioridade default do actionItem
+	addActionItemWindow.priorityComboBox.selectedIndex = 1;
+	
 	makeTargetListManually();	
 }

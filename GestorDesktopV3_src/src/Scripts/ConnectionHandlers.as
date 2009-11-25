@@ -51,7 +51,7 @@ private function refreshItemsSuccess(event : ResultEvent) : void
 	for(i=0; i<xml.descendants("title").length(); i++)
 	{
 		var priority:int;
-		priority = xml.descendants("priority")[i].toString();
+		priority = int(xml.descendants("priority")[i].toString());
 		//debug.text += xml.descendants("title")[i].toString()+"\n";
 		//debug.text += xml.descendants("targets")[i].child("user").child("login").toString();
 		

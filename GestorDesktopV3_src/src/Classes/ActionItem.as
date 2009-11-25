@@ -13,6 +13,8 @@ package Classes
 		
 		private var description:String;
 		private var due_date:String;
+		
+		//1 (High), 2 (Medium, default), 3 (Low)
 		private var priority:int;
 		
 		private var author_user_login:String;
