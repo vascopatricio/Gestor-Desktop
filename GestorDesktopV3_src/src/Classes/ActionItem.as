@@ -15,8 +15,6 @@ package Classes
 		private var due_date:String;
 		private var priority:int;
 		
-		private var xmlForm:String;
-		
 		private var author_user_login:String;
 		private var author_user_id:int;
 		private var author_user_name:String;
@@ -37,11 +35,6 @@ package Classes
 			author_user_login = inAuthor_user_login;
 			author_user_id = inAuthor_user_id;
 			author_user_name = inAuthor_user_name;			
-		}
-		
-		public function setXML(arg:String) : void
-		{
-			this.xmlForm = arg;
 		}
 		
 		public function getTitle() : String
@@ -79,10 +72,6 @@ package Classes
 		public function getDescription() : String
 		{
 			return description;
-		}
-		public function getXMLForm() : String
-		{
-			return xmlForm;
 		}
 		
 		public function getTargetsFullNameArray() : Array

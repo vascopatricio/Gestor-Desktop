@@ -89,7 +89,6 @@ private function refreshItemsSuccess(event : ResultEvent) : void
 			actionItem.getTargetsIDArray().push(userID);			
 		}
 		
-		actionItem.setXML("<action_item>\n<done>0</done>\n</action_item>");
 		actionItemsArray.push(actionItem);
 	}
 	

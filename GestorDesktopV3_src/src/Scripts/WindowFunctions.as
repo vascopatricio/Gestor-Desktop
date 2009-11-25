@@ -115,8 +115,8 @@ private function editActionItemFromWindow(event: MouseEvent) : void
 	Alert.show(makeTargetsString(),"");
 	params.description = addActionItemWindow.descriptionTextArea.text;
 	params.priority = addActionItemWindow.priorityComboBox.selectedIndex + 1;
-	if(addActionItemWindow.dueDateTextInput.text.length != 0)
-		params.due_date = addActionItemWindow.dueDateTextInput.text;
+	if(addActionItemWindow.duesDateField.text.length != 0)
+		params.due_date = addActionItemWindow.duesDateField.text;
 	
 	//Encode, basic auth
 	var encoder : Base64Encoder = new Base64Encoder();
@@ -144,8 +144,8 @@ private function addActionItemFromWindow(event : MouseEvent) : void
 	params.targets = makeTargetsString();
 	params.description = addActionItemWindow.descriptionTextArea.text;
 	params.priority = addActionItemWindow.priorityComboBox.selectedIndex + 1;
-	if(addActionItemWindow.dueDateTextInput.text.length != 0)
-		params.due_date = addActionItemWindow.dueDateTextInput.text;
+	if(addActionItemWindow.duesDateField.text.length != 0)
+		params.due_date = addActionItemWindow.duesDateField.text;
 	
 	//Encode, basic auth
 	var encoder : Base64Encoder = new Base64Encoder();

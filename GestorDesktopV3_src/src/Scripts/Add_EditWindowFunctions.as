@@ -105,6 +105,11 @@ private function createActionItemWindow() : void
 	priorities.push("Low");
 	addActionItemWindow.priorityComboBox.dataProvider = priorities;
 	addActionItemWindow.priorityComboBox.selectedIndex = 1;
+	
+	addActionItemWindow.duesDateField.formatString = "YYYY-MM-DD";
+	
+	var currentDate:Date = new Date();	
+	addActionItemWindow.duesDateField.text = currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate();
 }
 
 private function showEditActionItemWindow(actionItem: ActionItem) : void
@@ -121,7 +126,7 @@ private function showEditActionItemWindow(actionItem: ActionItem) : void
 	//API - 1 High, 2 Medium, 3 Low	
 	addActionItemWindow.priorityComboBox.selectedIndex = actionItem.getPriority();
 	
-	addActionItemWindow.dueDateTextInput.text = actionItem.getDues();
+	addActionItemWindow.duesDateField.text = actionItem.getDues();
 	makeTargetListManually();
 	
 	editWindowActionItem = actionItem;			
