@@ -1,9 +1,12 @@
 // ActionScript file
+import Classes.ActionItem;
+
 import flash.events.Event;
 
 import mx.collections.ArrayCollection;
-import mx.controls.Alert;
 import mx.utils.Base64Encoder;
+
+public var editWindowActionItem:ActionItem = null;
 
 private function makeTargetListManually() : void
 {
@@ -26,17 +29,6 @@ private function makeTargetListManually() : void
 	
 	//Send
 	service.send();
-	
-	var targets:ArrayCollection = new ArrayCollection();	
-	
-	targets.addItem("Vasco Patricio");
-	addActionItemWindow.currentUserIDs.push("60");
-	targets.addItem("Pedro Gaspar");
-	addActionItemWindow.currentUserIDs.push("1");
-	targets.addItem("Sérgio Santos");
-	addActionItemWindow.currentUserIDs.push("2");
-	
-	addActionItemWindow.targetList.dataProvider = targets;
 }
 
 private function makeTargetList(event : Event) : void
@@ -47,7 +39,28 @@ private function makeTargetList(event : Event) : void
 private function receiveTargetsHandler(event : ResultEvent) : void
 {
 	var xml:XML = XML(event.result);
-	Alert.show(xml.toString(),"");
+	var targets:ArrayCollection = new ArrayCollection();
+	
+	var i:int;
+	var j:int;
+	
+	for(i=0; i<xml.descendants("end_date").length(); i++)
+	{
+		for(j=0; j<xml.descendants("team")[i].child("user").child("name").length(); j++)
+		{	
+			var userName:String = xml.descendants("team")[i].child("user").child("name")[j].toString();
+			var userID:String = xml.descendants("team")[i].child("user").child("id")[j].toString();
+			
+			targets.addItem(userName);
+			addActionItemWindow.currentUserIDs.push(userID);
+			addActionItemWindow.currentUserNames.push(userName);
+		}	
+	}
+
+	addActionItemWindow.targetList.dataProvider = targets;
+	
+	if(editWindowActionItem != null)
+		selectPeopleFromActionItem();
 }
 
 private function getProjectName(index:int) : String
@@ -62,7 +75,7 @@ private function makeTargetsString() : String
 	
 	var i:int;
 	for(i = 0; i< array.length; i++)
-	{
+	{		
 		if(addActionItemWindow.targetList.selectedIndices.indexOf(i,0) < 0)
 			continue;
 		
@@ -92,8 +105,6 @@ private function createActionItemWindow() : void
 	priorities.push("Low");
 	addActionItemWindow.priorityComboBox.dataProvider = priorities;
 	addActionItemWindow.priorityComboBox.selectedIndex = 1;
-	
-	makeTargetListManually();
 }
 
 private function showEditActionItemWindow(actionItem: ActionItem) : void
@@ -112,10 +123,36 @@ private function showEditActionItemWindow(actionItem: ActionItem) : void
 	
 	addActionItemWindow.dueDateTextInput.text = actionItem.getDues();
 	makeTargetListManually();
+	
+	editWindowActionItem = actionItem;			
+}
+
+private function selectPeopleFromActionItem() : void
+{
+	var selectedIndices:Array = new Array(); 
+	var i:int;
+	//Por cada pessoa na equipa do ActionItem
+	for(i=0; i<editWindowActionItem.getTargetsIDArray().length; i++)
+	{
+		//Alert.show("TargetsIDArray contém "+editWindowActionItem.getTargetsIDArray()[i],"");
+		
+		//Procura o indice dessa pessoa no vector de pessoas do projecto
+		var index:int = addActionItemWindow.currentUserIDs.indexOf(editWindowActionItem.getTargetsIDArray()[i],0);
+			
+		//E selecciona esse indice na lista
+		if(index > -1)
+		{
+			//Alert.show("User participa! ","");
+			selectedIndices.push(index);
+		}
+	}
+	addActionItemWindow.targetList.selectedIndices = selectedIndices;
 }
 
 private function showAddActionItemWindow() : void
 {
+	editWindowActionItem = null;
+	
 	createActionItemWindow();
 	addActionItemWindow.addButton.addEventListener(MouseEvent.CLICK, addActionItemFromWindow);
 	makeTargetListManually();	
