@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window backgroundColor="#EFEFEF" showStatusBar="false" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="418" height="406">
+	<mx:Script>
+		<![CDATA[
+			public var hasBeenChanged:Boolean = false;
+			
+			public var currentUserNames:Array = new Array();
+			public var currentUserIDs:Array = new Array();
+		]]>
+	</mx:Script>
+	<mx:Button label="Cancel" width="92" id="cancelButton" height="33" x="307.75" top="351"/>
+	<mx:Button id = "addButton" label="Add"  width="96" x="116" height="33" top="351"/>
+	<mx:Label x="57" text="Title:" width="51" id="titleLabel" textAlign="right" fontSize="16" y="12"/>
+	<mx:Label x="-7" text="Description:" width="115" id="descriptionLabel" textAlign="right" fontSize="16" height="21" top="41"/>
+	<mx:Label x="36" text="Project:" width="72" id="projectLabel" textAlign="right" fontSize="16" height="21" top="121"/>
+	<mx:Label x="20" text="Due date:" width="88" id="dueDateLabel" textAlign="right" fontSize="16" height="21" top="151"/>
+	<mx:Label x="20" text="Targets:" width="85.75" id="targetsLabel" textAlign="right" fontSize="16" height="21" top="211"/>
+	<mx:Label text="(CTRL+click para múltiplos)" id="targetsLabel0" fontStyle="italic" width="286" height="18" x="113.75" top="325"/>
+	<mx:Label x="36" text="Priority:" width="71.25" id="priorityLabel" textAlign="right" fontSize="16" height="21" top="183"/>
+	<mx:TextInput id="titleTextInput" width="283.75" x="116" y="10"/>
+	<mx:TextArea id="descriptionTextArea" width="283.75" height="73" x="116" top="38"/>
+	<mx:ComboBox id="projectComboBox" width="283.75" height="23" x="116" top="122"></mx:ComboBox>
+	<mx:ComboBox id="priorityComboBox" width="284.5" height="23" x="115.25" top="184"></mx:ComboBox>
+	<mx:List id="targetList" width="286" height="103" x="113.75" top="214"/>
+	<mx:DateField id="duesDateField" width="283.75" height="22" x="116" top="154"/>
+	
+</mx:Window>
