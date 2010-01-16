@@ -1,0 +1,3 @@
+#Sat Jan 16 17:32:03 GMT 2010
+eclipse.preferences.version=1
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1263663122474">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1263663122474" javadocURL\="http\://java.sun.com/j2se/1.5.0/docs/api/" name\="Flex Builder 3" path\="C\:\\Program Files (x86)\\Adobe\\Flex Builder 3"/>\r\n</vmType>\r\n</vmSettings>\r\n

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" 
+						showStatusBar="false" 
+						layout="absolute" 
+						creationComplete="startup()" 
+						height="487" width="308" 
+						cornerRadius="20" 
+						currentState="Login"
+	>
+	<mx:states>
+		<mx:State name="Login">
+			<mx:RemoveChild target="{actionItemsPanel}"/>
+			<mx:RemoveChild target="{searchTextField}"/>
+			<mx:RemoveChild target="{searchLabel}"/>
+			<mx:RemoveChild target="{refreshBut}"/>
+			<mx:RemoveChild target="{logoutButton}"/>
+			<mx:RemoveChild target="{addButton}"/>
+			<mx:SetStyle target="{loginForm}" name="top" value="8"/>
+			<mx:SetStyle target="{loginForm}" name="bottom" value="9"/>
+			<mx:SetProperty name="height" value="165"/>
+			<mx:SetProperty name="explicitHeight" value="165"/>
+			<mx:SetProperty name="maxHeight" value="165"/>
+		</mx:State>
+		<mx:State name="ActionItemsManager">
+			<mx:RemoveChild target="{loginForm}"/>
+			<mx:SetProperty name="explicitHeight" value="487"/>
+			<mx:SetProperty name="minHeight" value="487"/>
+		</mx:State>
+	</mx:states>
+	<mx:Style source="SummerSky.css"/>
+	<mx:Script source="Scripts//Add_EditWindowFunctions.as"/>
+	<mx:Script source="Scripts//WindowFunctions.as"/>
+	<mx:Script source="Scripts//WindowHandlers.as"/>
+	<mx:Script source="Scripts//ActionItemFunctions.as"/>
+	<mx:Script source="Scripts//ConnectionFunctions.as"/>
+	<mx:Script source="Scripts//ConnectionHandlers.as"/>
+	<mx:Script source="Scripts//SystrayFunctions.as"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.*;
+			import mx.events.MenuEvent;
+			import Classes.ActionItem;
+			import mx.effects.easing.Quadratic;
+			
+			public var isSending:Boolean = false;
+			
+			public var labelsArray:Array = new Array();
+			public var checksArray:Array = new Array();
+			
+			public var hoverPanel:Panel = null;
+		
+			public var isLoggedIn:Boolean = false;
+			public var currentUser:String = "";
+			public var currentPass:String = "";
+		
+			private function startup() : void
+			{
+				actionItemsArray = new Array();
+				actionItemsProvider = new ArrayCollection();
+				
+				startupTrayIcon();
+				showLoginMode();
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Array id="actionItemsArray" />
+	<mx:Array id="doneActionItemsArray" />
+	
+	<mx:ArrayCollection id="actionItemsProvider" />
+	<mx:TextInput id="searchTextField" change="searchOnChanged()" right="21" left="135" top="14" height="22" click="searchOnClicked()" text="search" fontStyle="italic" fontSize="12" color="#BFBFBF" editable="true"/>
+	<mx:Text text="Action Items" id="searchLabel" left="10" top="14" width="117" height="20" fontSize="14"/>
+	<mx:Button label="Add" width="120" cornerRadius="4" id="addButton" click="showAddActionItemWindow()" left="21" bottom="10"/>
+	<mx:Button label="Logout" width="120" id="logoutButton" click="logout()" right="21" bottom="10"/>
+	<mx:Panel layout="absolute" title="ActionItems" id="actionItemsPanel" cornerRadius="7" bottom="86" left="10" right="10" top="42">
+	</mx:Panel>
+	<mx:Form label="Username" id="loginForm" right="10" left="10" top="100" bottom="154">
+		<mx:FormItem label="Username:">
+			<mx:TextInput id="userTextField"/>
+		</mx:FormItem>
+		<mx:FormItem label="Password:">
+			<mx:TextInput id="passTextField" displayAsPassword="true"/>
+		</mx:FormItem>
+		<mx:FormItem horizontalAlign="left">
+			<mx:Button id="loginBut" label="Login" click="login()"/>
+		</mx:FormItem>
+		<mx:FormItem label = "">
+			<mx:Label y="206" id="loginResult"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:Button label="Refresh" id="refreshBut" click="refreshAll()" fontSize="8" labelPlacement="bottom" width="62" height="27" textAlign="center" bottom="51" left="21"/>
+	
+	<mx:transitions>
+	  <mx:Transition fromState="Login" toState="ActionItemsManager">
+        <mx:Resize duration="5000" target="{this}" easingFunction="Quadratic.easeOut"/>
+	  </mx:Transition>
+	  <mx:Transition>
+        <mx:Resize duration="5000" target="{this}" easingFunction="Quadratic.easeOut"/>
+	  </mx:Transition>
+	</mx:transitions>
+	
+</mx:WindowedApplication>

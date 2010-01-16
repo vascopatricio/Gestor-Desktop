@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="com.adobe.flexbuilder.debug.launchConfigurationType.apollo">
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_AIR_COMMAND_LINE_ARGUMENTS" value=""/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_AIR_PUBLISHER_ID" value=""/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_AIR_SECURITY_POLICY_FILE" value="security-policies/default.xml"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_APPLICATION" value="src/GestorDesktopV3.mxml"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_DEBUG_URL" value="file:/D:/jeKnowledge/GestorDesktop/Gestor-Desktop/GestorDesktop_v4b/bin-debug/GestorDesktop_v4b-app.xml"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_PROFILE_URL" value="file:/D:/jeKnowledge/GestorDesktop/Gestor-Desktop/GestorDesktop_v4b/bin-debug/GestorDesktop_v4b-app.xml"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_PROJECT" value="GestorDesktop_v4b"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_RUN_URL" value="file:/D:/jeKnowledge/GestorDesktop/Gestor-Desktop/GestorDesktop_v4b/bin-debug/GestorDesktop_v4b-app.xml"/>
+<booleanAttribute key="com.adobe.flexbuilder.debug.ATTR_USE_DEFAULT_URLS" value="true"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/GestorDesktop_v4b"/>
+<listEntry value="/GestorDesktop_v4b/src/GestorDesktopV3.mxml"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+<listEntry value="1"/>
+</listAttribute>
+</launchConfiguration>

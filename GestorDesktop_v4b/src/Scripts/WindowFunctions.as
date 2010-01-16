@@ -56,12 +56,10 @@ private function removeProject(ID:int) : void
 		
 private function login() : void
 {
-	if(userTextField.text == null || passTextField.text == null)
-	{
-		loginResult.text = "Invalid username/password";
-		return;
-	}
-	if(userTextField.text.length == 0 || passTextField.text.length == 0)
+	var invalidLogin:Boolean = userTextField.text == null || userTextField.text.length == 0 || 
+							   passTextField.text == null || passTextField.text.length == 0;
+	
+	if (invalidLogin)
 	{
 		loginResult.text = "Invalid username/password";
 		return;
@@ -107,29 +105,13 @@ private function logout() : void
 
 private function showLoginMode() : void
 {
-	searchLabel.visible = false;
-	searchTextField.visible = false;
-	refreshBut.visible = false;
-	actionItemsPanel.visible = false;
-	addButton.visible = false;
-	logoutButton.visible = false;
-	
+	currentState = 'Login';
 	passTextField.addEventListener(KeyboardEvent.KEY_DOWN, checkIfEnterAndLogin);
-		
-	loginForm.visible = true;
 }
 
 private function showMainMode() : void
 {
-	searchLabel.visible = true;
-	searchTextField.visible = true;
-	refreshBut.visible = true;
-	actionItemsPanel.visible = true;
-	addButton.visible = true;
-	logoutButton.visible = true;
-	
-	loginForm.visible = false;
-	
+	currentState = 'ActionItemsManager';
 	refreshAll();
 }
 

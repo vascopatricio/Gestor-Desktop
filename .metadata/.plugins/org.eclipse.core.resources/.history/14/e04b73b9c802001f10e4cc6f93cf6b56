@@ -1,0 +1,210 @@
+// ActionScript file
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
+
+import mx.utils.Base64Encoder;
+
+public var addActionItemWindow:AddNewActionItemWindow;
+		
+public var availableProjectsNames:Array = new Array();
+public var availableProjectsIDs:Array = new Array();
+		
+private function showDebugVars() : void
+{
+	var show:String = "";
+	
+	show += "ActionItems in list:\n";
+	
+	var i:int;
+	for(i=0; i<actionItemsArray.length; i++)
+	{
+		var act:ActionItem = actionItemsArray[i];
+		show += act.getTitle();
+		
+		if(checksArray[i].selected == true)
+			show += " (checked)";
+		else
+			show += " (unchecked)";
+			
+		show += "\n";
+	}
+	
+	show += "\nCurrent projects:\n";
+	
+	for(i=0; i<availableProjectsIDs.length; i++)
+	{
+		show += availableProjectsNames[i];
+		show += " (ID:"+availableProjectsIDs[i]+")";
+		show += "\n";
+	}
+	
+	Alert.show(show, "Debug");
+}
+
+private function removeProject(ID:int) : void
+{
+	var i:int;
+	for(i=0; i<availableProjectsIDs.length; i++)
+		if(availableProjectsIDs[i] == ID)
+		{
+			//Splice: Elimina a partir do indice "i" 1 elementos
+			availableProjectsIDs.splice(i,1);
+			availableProjectsNames.splice(i,1);
+			return;
+		}
+}	
+		
+private function login() : void
+{
+	if(userTextField.text == null || passTextField.text == null)
+	{
+		loginResult.text = "Invalid username/password";
+		return;
+	}
+	if(userTextField.text.length == 0 || passTextField.text.length == 0)
+	{
+		loginResult.text = "Invalid username/password";
+		return;
+	}
+	
+	//Colocar aqui o request dos action items e fazer send
+	//Cria request
+	var service:HTTPService = new HTTPService();
+	service.url = "http://jeknowledge.pt/gestor/api/projects";
+	service.method = "GET";
+	service.addEventListener(ResultEvent.RESULT, loginHandler);
+	service.addEventListener(FaultEvent.FAULT, projectFailHandler);
+	service.resultFormat = "xml";
+	
+	//Encode, basic auth
+	var encoder : Base64Encoder = new mx.utils.Base64Encoder();
+	encoder.encode(userTextField.text+":"+passTextField.text);
+	service.headers["Authorization"] = "Basic " + encoder.toString();
+	
+	//Send
+	service.send();
+}
+
+private function logout() : void
+{
+	currentUser = null;
+	currentPass = null;
+	isLoggedIn = false;
+	
+	if(addActionItemWindow != null)
+		addActionItemWindow.close();
+	
+	availableProjectsIDs = null;
+	availableProjectsNames = null;
+	actionItemsArray = null;
+	doneActionItemsArray = null;
+	
+	//Muda ícone do systray
+	changeIcon();
+	
+	showLoginMode();
+}
+
+private function showLoginMode() : void
+{
+	searchLabel.visible = false;
+	searchTextField.visible = false;
+	refreshBut.visible = false;
+	actionItemsPanel.visible = false;
+	addButton.visible = false;
+	logoutButton.visible = false;
+	
+	passTextField.addEventListener(KeyboardEvent.KEY_DOWN, checkIfEnterAndLogin);
+		
+	loginForm.visible = true;
+}
+
+private function showMainMode() : void
+{
+	searchLabel.visible = true;
+	searchTextField.visible = true;
+	refreshBut.visible = true;
+	actionItemsPanel.visible = true;
+	addButton.visible = true;
+	logoutButton.visible = true;
+	
+	loginForm.visible = false;
+	
+	refreshAll();
+}
+
+private function editActionItemFromWindow(event: MouseEvent) : void
+{
+	if(addActionItemWindow.targetList.selectedIndices.length == 0)
+	{
+		Alert.show("The ActionItem must have at least one target!");
+		return;
+	}
+			
+	//Cria request
+	var service:HTTPService = new HTTPService();
+	service.url = editWindowActionItem.getProjectLink()+"?_method=PUT";
+	service.method = "POST";
+	service.addEventListener(ResultEvent.RESULT, editItemSuccess);
+	service.addEventListener(FaultEvent.FAULT, failHandler);
+	service.resultFormat = "xml";
+	
+	var params:Object = {};
+	params.title = addActionItemWindow.titleTextInput.text;
+	params.project_id = availableProjectsIDs[addActionItemWindow.projectComboBox.selectedIndex];
+	
+	params.targets = makeTargetsString();
+	//Alert.show(makeTargetsString(),"");
+	params.description = addActionItemWindow.descriptionTextArea.text;
+	params.priority = addActionItemWindow.priorityComboBox.selectedIndex + 1;
+	if(addActionItemWindow.duesDateField.text.length != 0)
+		params.due_date = addActionItemWindow.duesDateField.text;
+	
+	//Encode, basic auth
+	var encoder : Base64Encoder = new Base64Encoder();
+	encoder.encode(currentUser+":"+currentPass);
+	service.headers["Authorization"] = "Basic " + encoder.toString();
+	
+	//Send
+	service.send(params);
+}
+
+private function addActionItemFromWindow(event : MouseEvent) : void
+{
+	if(addActionItemWindow.targetList.selectedIndices.length == 0)
+	{
+		Alert.show("The ActionItem must have at least one target!");
+		return;
+	}
+	
+	//Cria request
+	var service:HTTPService = new HTTPService();
+	service.url = "http://jeknowledge.pt/gestor/api/action_items";
+	service.method = "POST";
+	service.addEventListener(ResultEvent.RESULT, addItemSuccess);
+	service.addEventListener(FaultEvent.FAULT, failHandler);
+	service.resultFormat = "xml";
+	
+	var params:Object = {};
+	params.title = addActionItemWindow.titleTextInput.text;
+	params.project_id = availableProjectsIDs[addActionItemWindow.projectComboBox.selectedIndex];
+	params.targets = makeTargetsString();
+	params.description = addActionItemWindow.descriptionTextArea.text;
+	params.priority = addActionItemWindow.priorityComboBox.selectedIndex + 1;
+	
+	if(addActionItemWindow.duesDateField.text.length != 0)
+		params.due_date = addActionItemWindow.duesDateField.text;
+	
+	//Encode, basic auth
+	var encoder : Base64Encoder = new Base64Encoder();
+	encoder.encode(currentUser+":"+currentPass);
+	service.headers["Authorization"] = "Basic " + encoder.toString();
+	
+	//Send
+	service.send(params);
+}
+
+private function closeAddActionItemWindow(event : MouseEvent) : void
+{
+	addActionItemWindow.close();
+}

@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication showStatusBar="false" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="startup()" height="487" width="308" cornerRadius="20">
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" 
+						showStatusBar="false" 
+						layout="absolute" 
+						creationComplete="startup()" 
+						height="487" width="308" 
+						cornerRadius="20" 
+						currentState="Login"
+	>
+	<mx:states>
+		<mx:State name="Login">
+			<mx:RemoveChild target="{actionItemsPanel}"/>
+			<mx:RemoveChild target="{searchTextField}"/>
+			<mx:RemoveChild target="{searchLabel}"/>
+			<mx:RemoveChild target="{refreshBut}"/>
+			<mx:RemoveChild target="{logoutButton}"/>
+			<mx:RemoveChild target="{addButton}"/>
+			<mx:SetStyle target="{loginForm}" name="top" value="8"/>
+			<mx:SetStyle target="{loginForm}" name="bottom" value="9"/>
+			<mx:SetProperty name="height" value="165"/>
+			<mx:SetProperty name="explicitHeight" value="165"/>
+			<mx:SetProperty name="minHeight" value="165"/>
+		</mx:State>
+		<mx:State name="ActionItemsManager">
+			<mx:RemoveChild target="{loginForm}"/>
+			<mx:SetProperty name="explicitHeight" value="487"/>
+			<mx:SetProperty name="minHeight" value="487"/>
+		</mx:State>
+	</mx:states>
 	<mx:Style source="SummerSky.css"/>
 	<mx:Script source="Scripts//Add_EditWindowFunctions.as"/>
 	<mx:Script source="Scripts//WindowFunctions.as"/>
@@ -14,6 +41,7 @@
 			import mx.collections.*;
 			import mx.events.MenuEvent;
 			import Classes.ActionItem;
+			import mx.effects.easing.Quadratic;
 			
 			public var isSending:Boolean = false;
 			
